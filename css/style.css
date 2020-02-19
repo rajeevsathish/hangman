@@ -46,3 +46,7 @@
 #stickman {
   padding: 3em;;
 }
+.ui-widget input {
+  padding: 5px;
+  font-size: 2em;
+}

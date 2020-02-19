@@ -39,7 +39,7 @@ $(function () {
         context = myStickman.getContext("2d");
         context.beginPath();
         context.strokeStyle = "#fff";
-        context.lineWidth = 2;
+        context.lineWidth = 5;
     };
 
     head = function () {
@@ -144,11 +144,15 @@ $(function () {
             });
         }
         if (currentQuestion < (totalQuestions - 1) && splitText.length === matchedWord.length) {
+            confetti.start();
             $('#myModal').modal({
                 show: 'true'
             });
         } else if (currentQuestion === (totalQuestions - 1) && splitText.length === matchedWord.length) {
-            $('.modal-body').find('p').text('You won !')
+            // Reset questionSet
+            questionSet = new Object();
+            $('.modal-body').find('p').text('You won !');
+            confetti.start();
             $('#myModal').modal({
                 show: 'true'
             });
@@ -158,6 +162,7 @@ $(function () {
         }
     }
     goToNextQuestion = () => {
+        confetti.stop();
         if (currentQuestion < (totalQuestions - 1) && splitText.length === matchedWord.length) {
             currentQuestion += 1;
             $('#myModal').modal({
@@ -223,38 +228,28 @@ $(function () {
             default:
                 break;
         }
-        var result = [];
-        for (var i = 0; i < totalQuestions; i++) {
-            result.push(data[Math.floor(Math.random() * data.length)]);
-        }
+        var result = _.sample(data);
         cb(null, result);
     }
     getQuestionSet = (index, lang) => {
-        // Get questions from API
-        loadJSON(lang, (err, response) => {
-            for (let i = 0; i < response.length; i++) {
-                questionSet[i] = {};
-                questionSet[i]['word'] = response[i]['word'];
-                questionSet[i]['questionText'] = response[i]['questionText'];
-                questionSet[i]['questionNumber'] = response[i]['questionNumber'];
-            }
-            matchedWord = [];
-            document.getElementById('question').innerHTML = questionSet[index]['questionText'];
-            testWord = questionSet[index]['word'];
-            startTime = (new Date()).getTime()
-            switch (lang) {
-                case 'hi':
-                    splitHindi(testWord);
-                    break;
-                case 'kn':
-                    splitKannada(testWord);
-                    break
-                default:
-                    splitText = testWord.split('');
-                    createDash(splitText)
-                    break;
-            }
-        });
+        matchedWord = [];
+        let _q = questionSet[index]['questionText'];
+        if (lang == 'en') _q = _q.charAt(0).toUpperCase() + _q.slice(1);
+        document.getElementById('question').innerHTML = _q;
+        testWord = questionSet[index]['word'];
+        startTime = (new Date()).getTime()
+        switch (lang) {
+            case 'hi':
+                splitHindi(testWord);
+                break;
+            case 'kn':
+                splitKannada(testWord);
+                break
+            default:
+                splitText = testWord.split('');
+                createDash(splitText)
+                break;
+        }
     };
     getAllIndexes = (arr, val) => {
         var indexes = [], i = -1;
@@ -328,7 +323,15 @@ $(function () {
             showKb(layout);
             selectedLang = layout;
             //getQuestion from API
-            getQuestionSet(currentQuestion, layout);
+            loadJSON(layout, (err, response) => {
+                for (let i = 0; i < response.length; i++) {
+                    questionSet[i] = {};
+                    questionSet[i]['word']              = response[i]['word'];
+                    questionSet[i]['questionText']      = response[i]['questionText'];
+                    questionSet[i]['questionNumber']    = response[i]['questionNumber'];
+                }
+                getQuestionSet(currentQuestion, layout);
+            });
         }).trigger('change');
     $('#multi').focusout((e) => {
         var kb = $('#multi').getkeyboard();
