@@ -1,13 +1,20 @@
 $(function () {
-    var lives           = 10;
-    var testWord        = '';
-    var questionSet     = {};
-    var matchedWord     = [];
-    var selectedLang    = 'en';
-    var totalQuestions  = 5;
+    var lives = 10;
+    var testWord = '';
+    var questionSet = {};
+    var matchedWord = [];
+    var selectedLang = 'en';
+    var totalQuestions = 5;
     var currentQuestion = 0;
+
+    getUserData = (key) => {
+        var urlParams = new URLSearchParams(URL);
+        return urlParams.get(key);
+    }
+    var userName = getUserData('userName');
+    var userId = getUserData('userId')
     var startTime = (new Date()).getTime();
-    generateVisit();
+    //generateVisit();
     var showLives = document.getElementById('mylives');
     // Animate man
     animate = function () {
@@ -20,7 +27,7 @@ $(function () {
         $('.modal-body').find('p').text('You Lost all the life !')
         $('#myModal').modal({
             show: 'true'
-        }); 
+        });
         $('.modal-footer').hide();
         // if (r == true) {
         //     lives = 10
@@ -104,7 +111,20 @@ $(function () {
         showLives.innerHTML = "You have " + lives + " lives";
         if (lives < 1) {
             showLives.innerHTML = "Game Over";
+            switch (currentQuestion) {
+                case 3:
+                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'BRONZE', this.userId);
+                    break;
+                case 4:
+                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'SILVER', this.userId);
+                    break;
+                case 5:
+                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', this.userId);
+                    break;
+    
+            }
         }
+        
         // for (var i = 0; i < geusses.length; i++) {
         // 	if (counter + space === geusses.length) {
         // 		showLives.innerHTML = "You Win!";
@@ -114,7 +134,7 @@ $(function () {
     canvas();
     comments();
     charMatched = function (index, charMatch) {
-        if (_.indexOf(matchedWord,charMatch) > -1){
+        if (_.indexOf(matchedWord, charMatch) > -1) {
 
         } else {
             index.forEach(occurrence => {
@@ -123,18 +143,18 @@ $(function () {
                 matchedWord.push(charMatch);
             });
         }
-        if (currentQuestion < (totalQuestions - 1) && splitText.length === matchedWord.length) {    
+        if (currentQuestion < (totalQuestions - 1) && splitText.length === matchedWord.length) {
             $('#myModal').modal({
                 show: 'true'
-            }); 
-        } else if (currentQuestion === (totalQuestions - 1) && splitText.length === matchedWord.length){
+            });
+        } else if (currentQuestion === (totalQuestions - 1) && splitText.length === matchedWord.length) {
             $('.modal-body').find('p').text('You won !')
             $('#myModal').modal({
                 show: 'true'
-            }); 
+            });
             $('.modal-footer').hide();
-            generateAssess(((new Date()).getTime()-startTime),totalQuestions,currentQuestion);
-            generateEarn(((new Date()).getTime()-startTime),currentQuestion,'GOLD');
+            generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, this.userId);
+            //generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', this.userId);
         }
     }
     goToNextQuestion = () => {
@@ -143,16 +163,16 @@ $(function () {
             $('#myModal').modal({
                 show: 'false'
             });
-            generateAssess(((new Date()).getTime()-startTime),totalQuestions,currentQuestion); 
-            if(currentQuestion === 3){
-                generateEarn(((new Date()).getTime()-startTime),currentQuestion, 'BRONZE'); 
-            } else if (currentQuestion === 4) {
-                generateEarn(((new Date()).getTime()-startTime),currentQuestion,'SILVER'); 
-            }
+            generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, this.userId);
+            // if (currentQuestion === 3) {
+            //     generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'BRONZE', this.userId);
+            // } else if (currentQuestion === 4) {
+            //     generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'SILVER', this.userId);
+            // }
             getQuestionSet(currentQuestion, selectedLang)
-        } 
+        }
     }
-    
+
     //var GraphemeSplitter = require('grapheme-splitter')
     var splitText = [];
     splitHindi = function (word) {
@@ -214,9 +234,9 @@ $(function () {
         loadJSON(lang, (err, response) => {
             for (let i = 0; i < response.length; i++) {
                 questionSet[i] = {};
-                questionSet[i]['word']              = response[i]['word'];
-                questionSet[i]['questionText']      = response[i]['questionText'];
-                questionSet[i]['questionNumber']    = response[i]['questionNumber'];
+                questionSet[i]['word'] = response[i]['word'];
+                questionSet[i]['questionText'] = response[i]['questionText'];
+                questionSet[i]['questionNumber'] = response[i]['questionNumber'];
             }
             matchedWord = [];
             document.getElementById('question').innerHTML = questionSet[index]['questionText'];
@@ -326,5 +346,5 @@ $(function () {
         var i = splitText[Math.floor(Math.random() * splitText.length)];
         isLetterMatch(i);
     }
- 
+
 });

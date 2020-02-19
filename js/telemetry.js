@@ -1,3 +1,10 @@
+ uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    })
+}
+
 sendTelemetry = (data) => {
     fetch('https://devcon.sunbirded.org/content/data/v1/telemetry', {
         method: 'POST',
@@ -8,7 +15,7 @@ sendTelemetry = (data) => {
             id: 'api.sunbird.telemetry',
             ver: '3.0',
             params: {
-                msgid: "gsyhbvtfd99a6c2723d67aaa649190ba"
+                msgid: uuidv4()
             },
             ets: (new Date()).getTime(),
             events: [data]
@@ -22,30 +29,26 @@ sendTelemetry = (data) => {
 generateVisit = () => {
     var data = {
         "eid": "DC_VISIT",
-        "mid": "gsyhbvtfd99a6c2723d67aaa649190ba",
+        "mid": uuidv4(),
         "ets": (new Date()).getTime(),
         "did": "8ceeb01fd99a6c2723d67aaa649190ba",
         "profileId": "visitor-1",
-        "stallId": "GAMES",
-        "ideaId": "Hangman",
+        "stallId": "STA3",
+        "ideaId": "IDE22",
         "edata": {
         }
     }
     sendTelemetry(data);
 }
-generateAssess = (ts, maxscore, currentScore) => {
+generateAssess = (ts, maxscore, currentScore,userId) => {
     var data = {
         "eid": "DC_ASSESS",
-        "mid": "gsyhbvtfd99a6c2723d67aaa649190ba",
+        "mid": uuidv4(),
         "ets": (new Date()).getTime(),
         "did": "8ceeb01fd99a6c2723d67aaa649190ba",
-        "profileId": "visitor-1",
-        "stallId": "GAMES",
-        "ideaId": "Hangman",
-        "sid": "Session20",
-        "contentId": "do_53487589875983478",
-        "contentType": "AssessmentItem",
-        "contentName": "Assessment1",
+        "profileId": userId,
+        "stallId": "STA3",
+        "ideaId": "IDE22",
         "edata": {
             "duration": ts,
             "maxScore": maxscore,
@@ -54,16 +57,15 @@ generateAssess = (ts, maxscore, currentScore) => {
     }
     sendTelemetry(data);
 }
-generateEarn = (ts, currentScore, badge) => {
+generateEarn = (ts, currentScore, badge,userId) => {
     var data = {
         "eid": "DC_EARN",
-        "mid": "gsyhbvtfd99a6c2723d67aaa649190ba",
+        "mid": uuidv4(),
         "ets": (new Date()).getTime(),
         "did": "8ceeb01fd99a6c2723d67aaa649190ba",
-        "profileId": "visitor-1",
-        "studentId": "student-1",
-        "stallId": "GAMES",
-        "ideaId": "Session20",
+        "profileId": userId,
+        "stallId": "STA3",
+        "ideaId": "IDE22",
         "edata": {
             "type": "HangmanBadge",
             "points": currentScore,
