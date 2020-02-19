@@ -170,6 +170,8 @@ $(function () {
             $('#myModal').modal({
                 show: 'false'
             });
+            document.getElementById('hintBtn').setAttribute('style', 'background-color: #375a7f;border-color: #375a7f;');
+            document.getElementById('hintBtn').disabled = false;
             generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, this.userId);
             // if (currentQuestion === 3) {
             //     generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'BRONZE', this.userId);
@@ -324,6 +326,7 @@ $(function () {
             //$('h2').text($opt.text());
             showKb(layout);
             selectedLang = layout;
+            document.onkeydown = (e) => { return false; }
             //getQuestion from API
             loadJSON(layout, (err, response) => {
                 for (let i = 0; i < response.length; i++) {
@@ -348,6 +351,8 @@ $(function () {
     });
     showHint = () => {
         // document.getElementById('hint').innerHTML = questionSet[currentQuestion]['hint'];
+        document.getElementById('hintBtn').setAttribute('style', 'background-color: gray;border-color: gray;');
+        document.getElementById('hintBtn').disabled = true;
         var i = splitText[Math.floor(Math.random() * splitText.length)];
         isLetterMatch(i);
     }

@@ -66,7 +66,7 @@
 								<ul id='my-word'></ul>
 							</div>
 							<!-- Hint button -->
-							<div><button class="btn btn-primary" onclick="showHint()">Hint</button></div>
+							<div><button class="btn btn-primary" id="hintBtn" onclick="showHint()">Hint</button></div>
 						</div>
 						<input id="multi" type="text" />
 						<br />
@@ -75,9 +75,14 @@
 				</div>
 			</div>
 			<div class="col-md-4 col-xs-12 col-sm-12 right-box text-center">
-				<h3 id='mylives'>
-					</h4>
+				<h3 id='mylives'></h4>
 					<canvas id="stickman">This Text will show if the Browser does NOT support HTML5 Canvas tag</canvas>
+					<h4>Rules</h4>
+					<ol style="text-align: left;">
+						<li>Each game consists of 5 questions</li>
+						<li><b>Hint</b> can be used only <b>once per question</b></li>
+						<li>Each game will have <b>10</b> chance for incorrect option</li>
+					</ol>
 			</div>
 		</div>
 
