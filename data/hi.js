@@ -116,7 +116,7 @@ var hi_data = [
         }, {
             "questionNumber": 3,
             "questionText": "हिन्द महासागर और लाल सागर को कौनसी जलसन्धि जोड़ती हैं?",
-            "word": "बाब-अल-मन्देब"
+            "word": "बाबअलमन्देब"
         }, {
             "questionNumber": 4,
             "questionText": "अरब सागर के पानी का औसतन खारापन हैं?",

@@ -6,8 +6,8 @@ $(function () {
     var selectedLang = 'en';
     var totalQuestions = 5;
     var currentQuestion = 0;
-
-    getUserData = (key) => {
+    var userId = null;
+    getUserData = (name) => {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(location.search);
@@ -115,13 +115,13 @@ $(function () {
             showLives.innerHTML = "Game Over";
             switch (currentQuestion) {
                 case 3:
-                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'BRONZE', this.userId);
+                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'BRONZE', userId);
                     break;
                 case 4:
-                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'SILVER', this.userId);
+                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'SILVER', userId);
                     break;
                 case 5:
-                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', this.userId);
+                    generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', userId);
                     break;
     
             }
@@ -159,7 +159,7 @@ $(function () {
                 show: 'true'
             });
             $('.modal-footer').hide();
-            generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, this.userId);
+            generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, userId);
             //generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', this.userId);
         }
     }
@@ -170,7 +170,7 @@ $(function () {
             $('#myModal').modal({
                 show: 'false'
             });
-            generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, this.userId);
+            generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, userId);
             // if (currentQuestion === 3) {
             //     generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'BRONZE', this.userId);
             // } else if (currentQuestion === 4) {
