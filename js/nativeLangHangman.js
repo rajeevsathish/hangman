@@ -8,8 +8,10 @@ $(function () {
     var currentQuestion = 0;
 
     getUserData = (key) => {
-        var urlParams = new URLSearchParams(URL);
-        return urlParams.get(key);
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
     var userName = getUserData('userName');
     var userId = getUserData('userId')
