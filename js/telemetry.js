@@ -1,7 +1,7 @@
- uuidv4 = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
+uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
     })
 }
 
@@ -40,13 +40,13 @@ generateVisit = () => {
     }
     sendTelemetry(data);
 }
-generateAssess = (ts, maxscore, currentScore,userId) => {
+generateAssess = (ts, maxscore, currentScore, userId) => {
     var data = {
         "eid": "DC_ASSESS",
         "mid": uuidv4(),
         "ets": (new Date()).getTime(),
         "did": "8ceeb01fd99a6c2723d67aaa649190ba",
-        "profileId": userId,
+        "profileId": userId ? userId : 'anonymous',
         "stallId": "STA3",
         "ideaId": "IDE22",
         "edata": {
@@ -57,13 +57,13 @@ generateAssess = (ts, maxscore, currentScore,userId) => {
     }
     sendTelemetry(data);
 }
-generateEarn = (ts, currentScore, badge,userId) => {
+generateEarn = (ts, currentScore, badge, userId) => {
     var data = {
         "eid": "DC_EARN",
         "mid": uuidv4(),
         "ets": (new Date()).getTime(),
         "did": "8ceeb01fd99a6c2723d67aaa649190ba",
-        "profileId": userId,
+        "profileId": userId ? userId : 'anonymous',
         "stallId": "STA3",
         "ideaId": "IDE22",
         "edata": {
