@@ -1,13 +1,13 @@
 $(function () {
-
     var lives           = 10;
     var testWord        = '';
     var questionSet     = {};
     var matchedWord     = [];
     var selectedLang    = 'en';
-    var totalQuestions  = 3;
+    var totalQuestions  = 5;
     var currentQuestion = 0;
-    
+    var startTime = (new Date()).getTime();
+    generateVisit();
     var showLives = document.getElementById('mylives');
     // Animate man
     animate = function () {
@@ -16,12 +16,15 @@ $(function () {
 
     };
     freezAll = function () {
-        var r = confirm("You have lost to restart the game click ok");
-        if (r == true) {
-            lives = 10
-        } else {
-
-        }
+        //var r = confirm("You have lost to restart the game click ok");
+        $('.modal-body').find('p').text('You Lost all the life !')
+        $('#myModal').modal({
+            show: 'true'
+        }); 
+        $('.modal-footer').hide();
+        // if (r == true) {
+        //     lives = 10
+        // } 
     }
     // Hangman
     canvas = function () {
@@ -111,11 +114,15 @@ $(function () {
     canvas();
     comments();
     charMatched = function (index, charMatch) {
-        index.forEach(occurrence => {
-            var el = '#guess_' + occurrence;
-            $(el).text(charMatch);
-            matchedWord.push(charMatch);
-        });
+        if (_.indexOf(matchedWord,charMatch) > -1){
+
+        } else {
+            index.forEach(occurrence => {
+                var el = '#guess_' + occurrence;
+                $(el).text(charMatch);
+                matchedWord.push(charMatch);
+            });
+        }
         if (currentQuestion < (totalQuestions - 1) && splitText.length === matchedWord.length) {    
             $('#myModal').modal({
                 show: 'true'
@@ -126,6 +133,8 @@ $(function () {
                 show: 'true'
             }); 
             $('.modal-footer').hide();
+            generateAssess(((new Date()).getTime()-startTime),totalQuestions,currentQuestion);
+            generateEarn(((new Date()).getTime()-startTime),currentQuestion,'GOLD');
         }
     }
     goToNextQuestion = () => {
@@ -133,11 +142,15 @@ $(function () {
             currentQuestion += 1;
             $('#myModal').modal({
                 show: 'false'
-            }); 
+            });
+            generateAssess(((new Date()).getTime()-startTime),totalQuestions,currentQuestion); 
+            if(currentQuestion === 3){
+                generateEarn(((new Date()).getTime()-startTime),currentQuestion, 'BRONZE'); 
+            } else if (currentQuestion === 4) {
+                generateEarn(((new Date()).getTime()-startTime),currentQuestion,'SILVER'); 
+            }
             getQuestionSet(currentQuestion, selectedLang)
-        } else {
-           
-        }
+        } 
     }
     
     //var GraphemeSplitter = require('grapheme-splitter')
@@ -208,6 +221,7 @@ $(function () {
             matchedWord = [];
             document.getElementById('question').innerHTML = questionSet[index]['questionText'];
             testWord = questionSet[index]['word'];
+            startTime = (new Date()).getTime()
             switch (lang) {
                 case 'hi':
                     splitHindi(testWord);
@@ -312,4 +326,5 @@ $(function () {
         var i = splitText[Math.floor(Math.random() * splitText.length)];
         isLetterMatch(i);
     }
+ 
 });
