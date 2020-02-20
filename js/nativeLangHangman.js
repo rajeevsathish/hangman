@@ -168,6 +168,7 @@ $(function () {
         confetti.stop();
         if (currentQuestion < (totalQuestions - 1) && splitText.length === matchedWord.length) {
             currentQuestion += 1;
+            document.getElementById('questionNumber').innerHTML = 'Q.' + currentQuestion.toString();
             $('#myModal').modal({
                 show: 'false'
             });
@@ -241,6 +242,7 @@ $(function () {
         let _q = questionSet[index]['questionText'];
         if (lang == 'en') _q = _q.charAt(0).toUpperCase() + _q.slice(1);
         document.getElementById('question').innerHTML = _q;
+        document.getElementById('questionNumber').innerHTML = 'Q.' + (currentQuestion + 1).toString();
         testWord = questionSet[index]['word'];
         startTime = (new Date()).getTime()
         switch (lang) {
