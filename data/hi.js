@@ -107,8 +107,8 @@ var hi_data = [
     [
         {
             "questionNumber": 1,
-            "questionText": "",
-            "word": "भारत"
+            "questionText": "सूर्य किस दिशा से उगता है?",
+            "word": "पूर्व"
         }, {
             "questionNumber": 2,
             "questionText": "विश्व में सबसे अधिक कोयला उत्पादन करने वाला देश हैं?",

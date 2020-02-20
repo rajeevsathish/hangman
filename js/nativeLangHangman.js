@@ -160,6 +160,7 @@ $(function () {
             });
             $('.modal-footer').hide();
             generateAssess(((new Date()).getTime() - startTime), totalQuestions, currentQuestion, userId);
+            generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', userId);
             //generateEarn(((new Date()).getTime() - startTime), currentQuestion, 'GOLD', this.userId);
         }
     }
